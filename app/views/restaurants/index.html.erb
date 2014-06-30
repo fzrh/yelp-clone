@@ -5,6 +5,7 @@
       <!--<a href='/restaurants/<%= r.id%>/edit'>Edit <%= r.name %></a> --> 
       <%= link_to "Edit", edit_restaurant_path(r.id) %>
       <!-- http://api.rubyonrails.org/classes/ActionView/Helpers/UrlHelper.html#method-i-link_to -->
+      <%= link_to 'Delete', restaurant_path(r.id), method: :delete, data: { confirm: 'Are you sure?' } %>
     </li>
   <% end %>
   </ul>
