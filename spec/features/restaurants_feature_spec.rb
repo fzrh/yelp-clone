@@ -47,6 +47,7 @@ describe 'restaurant delete' do
     visit '/restaurants'
     click_link 'Delete'
     expect(current_path).to eq '/restaurants'
-    expect(page).not_to have_content 'KFC'
+    # expect(page).not_to have_content 'KFC'
+    expect(page).to have_content 'Successfully deleted KFC'
   end
 end   
