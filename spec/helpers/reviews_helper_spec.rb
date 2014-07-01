@@ -27,5 +27,10 @@ RSpec.describe ReviewsHelper, :type => :helper do
         expect(star_rating(3)).to eq '★★★☆☆'
       end
     end
+    context 'non-whole number rating' do
+      it 'rounds to the nearest star' do
+        expect(star_rating(2.5)).to eq '★★★☆☆'
+      end
+    end
   end
 end
