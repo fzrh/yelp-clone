@@ -1,14 +1,29 @@
 require 'rails_helper'
 
+def leave_review(thoughts, rating)
+  visit '/restaurants'
+  click_link 'Review'
+  fill_in 'Thoughts', with: thoughts
+  select rating, from: 'Rating'
+  click_button 'Create Review'
+end
+
 describe 'writing reviews' do
   before { Restaurant.create name: 'KFC', cuisine: 'Chicken'}
 
   it 'should add the review to the restaurant' do
-    visit '/restaurants'
-    click_link 'Review'
-    fill_in 'Thoughts', with: 'Not great'
-    select '2', from: 'Rating'
-    click_button 'Create Review'
+    leave_review('Not great', 2)
     expect(page).to have_content 'Not great (2)'
+  end
+end
+
+
+describe 'average ratings' do 
+  before { Restaurant.create name: 'KFC', cuisine: 'Chicken'}
+
+  it 'calculates and display the average rating' do
+    leave_review('Poor', 1)
+    leave_review('Great', 4)
+    expect(page).to have_content 'Average rating: 3'
   end
 end
