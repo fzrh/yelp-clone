@@ -2,9 +2,15 @@
   <ul>
   <% @restaurants.each do |restaurant| %>
     <li><%= restaurant.name %> (<%= restaurant.cuisine %>)
-      <%= link_to "Edit", edit_restaurant_path(restaurant.id) %>
       <!-- http://api.rubyonrails.org/classes/ActionView/Helpers/UrlHelper.html#method-i-link_to -->
+      <%= link_to "Edit", edit_restaurant_path(restaurant.id) %>
       <%= link_to 'Delete', restaurant_path(restaurant.id), method: :delete, data: { confirm: 'Are you sure?' } %>
+      <%= link_to "Review", new_restaurant_review_path(restaurant.id) %>
+      <ul>
+        <% restaurant.reviews.each do |review| %>
+          <li><%= review.thoughts %> (<%= review.rating %>)</li>
+        <% end %>
+      </ul>
     </li>
   <% end %>
   </ul>
