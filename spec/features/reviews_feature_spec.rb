@@ -5,7 +5,7 @@ describe 'writing reviews' do
 
   it 'should add the review to the restaurant' do
     visit '/restaurants'
-    click_link 'Review KFC'
+    click_link 'Review'
     fill_in 'Thoughts', with: 'Not great'
     select '2', from: 'Rating'
     click_button 'Create Review'
