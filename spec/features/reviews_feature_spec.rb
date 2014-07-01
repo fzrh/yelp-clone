@@ -22,8 +22,8 @@ describe 'average ratings' do
   before { Restaurant.create name: 'KFC', cuisine: 'Chicken'}
 
   it 'calculates and display the average rating' do
-    leave_review('Poor', 1)
-    leave_review('Great', 4)
-    expect(page).to have_content 'Average rating: 3'
+    leave_review('Poor', '2')
+    leave_review('Great', '4')
+    expect(page).to have_content "Average rating: ★★★☆☆"
   end
 end
