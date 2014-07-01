@@ -14,11 +14,19 @@ RSpec.describe Restaurant, :type => :model do
         expect(kfc.average_rating).to eq 3
       end
     end
+
     context 'with multiple reviews' do
       it 'returns the average of those review' do
         kfc.reviews.create(rating: 2)
         kfc.reviews.create(rating: 4)
         expect(kfc.average_rating).to eq 3 
+      end
+    end
+    context 'average review is not a whole number' do
+      it 'returns the average as a float' do
+        kfc.reviews.create(rating: 2)
+        kfc.reviews.create(rating: 3)
+        expect(kfc.average_rating).to eq 2.5
       end
     end
   end
