@@ -38,7 +38,6 @@ describe 'restaurant creation form' do
       fill_in 'Cuisine', with: 'ff'
       click_button 'Create Restaurant'
       expect(current_path).to eq '/restaurants'
-      expect(page).to have_content 'Burger King (ff)'
       expect(page).to have_content 'Errors'
     end
   end
@@ -50,10 +49,11 @@ describe 'restaurant edit form' do
     visit '/restaurants'
     click_link 'Edit'
     fill_in 'Name', with: 'Kentucky Fried Chicken'
-    fill_in 'Name', with: 'Fast Food'
+    fill_in 'Cuisine', with: 'Fast Food'
     click_button 'Update Restaurant'
     expect(current_path).to eq '/restaurants'
     expect(page).to have_content 'Kentucky Fried Chicken'
+    expect(page).to have_content 'Fast Food'
   end
 end   
 
@@ -63,7 +63,6 @@ describe 'restaurant delete' do
     visit '/restaurants'
     click_link 'Delete'
     expect(current_path).to eq '/restaurants'
-    # expect(page).not_to have_content 'KFC'
     expect(page).to have_content 'Successfully deleted KFC'
   end
 end   
