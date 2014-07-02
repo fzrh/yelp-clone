@@ -12,6 +12,13 @@
           <li><%= review.thoughts %> (<%= review.rating %>)</li>
         <% end %>
       </ul>
+        <%= form_for [restaurant, @review] do |f| %>
+      <%= f.label :thoughts %>
+      <%= f.text_area :thoughts %>
+      <%= f.label :rating %>
+      <%= f.select :rating, 1..5 %>
+      <%= f.submit %>
+    <% end %>
     </li>
   <% end %>
   </ul>
