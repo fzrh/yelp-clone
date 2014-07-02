@@ -20,13 +20,27 @@ describe 'restaurants listing page' do
 end
 
 describe 'restaurant creation form' do
-  it 'should be able to create a restaurant' do
-    visit '/restaurants/new'
-    fill_in 'Name', with: 'Burger King'
-    fill_in 'Cuisine', with: 'Fast Food'
-    click_button 'Create Restaurant'
-    expect(current_path).to eq '/restaurants'
-    expect(page).to have_content 'Burger King (Fast Food)'
+  context 'input is valid' do
+    it 'should be able to create a restaurant' do
+      visit '/restaurants/new'
+      fill_in 'Name', with: 'Burger King'
+      fill_in 'Cuisine', with: 'Fast Food'
+      click_button 'Create Restaurant'
+      expect(current_path).to eq '/restaurants'
+      expect(page).to have_content 'Burger King (Fast Food)'
+    end
+  end
+
+  context 'input is not valid' do
+    it 'should be able to create a restaurant' do
+      visit '/restaurants/new'
+      fill_in 'Name', with: 'Burger King'
+      fill_in 'Cuisine', with: 'ff'
+      click_button 'Create Restaurant'
+      expect(current_path).to eq '/restaurants'
+      expect(page).to have_content 'errors'
+      expect(page).to have_content 'Burger King (ff)'
+    end
   end
 end
 
