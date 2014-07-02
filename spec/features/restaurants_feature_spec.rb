@@ -10,7 +10,7 @@ describe 'restaurants listing page' do
 
   context 'are restaurants' do
     before do
-      Restaurant.create(name: 'Ledbury')
+      Restaurant.create(name: 'Ledbury', cuisine: 'French')
     end
     it 'should show the restaurant' do
       visit '/restaurants'
@@ -38,18 +38,19 @@ describe 'restaurant creation form' do
       fill_in 'Cuisine', with: 'ff'
       click_button 'Create Restaurant'
       expect(current_path).to eq '/restaurants'
-      expect(page).to have_content 'errors'
       expect(page).to have_content 'Burger King (ff)'
+      expect(page).to have_content 'Errors'
     end
   end
 end
 
 describe 'restaurant edit form' do
-  before {Restaurant.create name: 'KFC'}
+  before {Restaurant.create name: 'KFC', cuisine: 'Chicken'}
   it 'should be able to edit a restaurant' do
     visit '/restaurants'
     click_link 'Edit'
     fill_in 'Name', with: 'Kentucky Fried Chicken'
+    fill_in 'Name', with: 'Fast Food'
     click_button 'Update Restaurant'
     expect(current_path).to eq '/restaurants'
     expect(page).to have_content 'Kentucky Fried Chicken'
@@ -57,7 +58,7 @@ describe 'restaurant edit form' do
 end   
 
 describe 'restaurant delete' do
-  before {Restaurant.create name: 'KFC'}
+  before {Restaurant.create name: 'KFC', cuisine: 'Chicken'}
   it 'should be able to delete a restaurant' do
     visit '/restaurants'
     click_link 'Delete'
