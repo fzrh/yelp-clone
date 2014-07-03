@@ -60,9 +60,9 @@ describe 'restaurant creation form' do
 end
 
 describe 'restaurant editing and deleting' do
-  before {Restaurant.create name: 'KFC', cuisine: 'Chicken'}
 
   context 'logged out' do
+  before {Restaurant.create name: 'KFC', cuisine: 'Chicken'}
     it 'should not be able to edit a restaurant' do
       visit '/restaurants'
       expect(page).not_to have_link 'Edit'
@@ -78,6 +78,7 @@ describe 'restaurant editing and deleting' do
     before do
       user = User.create email: 'hello@hello.com', password: '12345678', password_confirmation: '12345678'
       login_as user
+      Restaurant.create name: 'KFC', cuisine: 'Chicken', user: user
     end
 
     it 'should be able to edit a restaurant' do
