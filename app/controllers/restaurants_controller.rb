@@ -12,6 +12,7 @@ before_action :authenticate_user!, except: [:index]
 
   def create
     @restaurant = Restaurant.new restaurant_params
+    @restaurant.user = current_user
     if @restaurant.save
       redirect_to '/restaurants'
     else
@@ -29,10 +30,20 @@ before_action :authenticate_user!, except: [:index]
     redirect_to '/restaurants'
   end
 
+  # def destroy
+  #   @restaurant = Restaurant.find(params[:id])
+  #   @restaurant.destroy
+  #   flash[:notice] = "Successfully deleted #{@restaurant.name}"
+  #   redirect_to '/restaurants'
+  # end
+
   def destroy
-    @restaurant = Restaurant.find(params[:id])
+    @restaurant = current_user.restaurant.find params[:id]
     @restaurant.destroy
     flash[:notice] = "Successfully deleted #{@restaurant.name}"
+  rescue ActiveRecord::RecordNotFound
+    flash[:notice] = "Not your restaurant!"
+  ensure
     redirect_to '/restaurants'
   end
 
