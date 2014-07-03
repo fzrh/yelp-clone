@@ -12,7 +12,7 @@ describe 'writing reviews' do
 
   it 'should add the review to the restaurant' do
     leave_review('Not great', 2)
-    expect(page).to have_content 'Not great (2)'
+    expect(page).to have_content 'Not great (★★☆☆☆)'
   end
 end
 
