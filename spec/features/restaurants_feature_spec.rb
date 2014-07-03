@@ -20,49 +20,82 @@ describe 'restaurants listing page' do
 end
 
 describe 'restaurant creation form' do
-  context 'input is valid' do
-    it 'should be able to create a restaurant' do
-      visit '/restaurants/new'
-      fill_in 'Name', with: 'Burger King'
-      fill_in 'Cuisine', with: 'Fast Food'
-      click_button 'Create Restaurant'
-      expect(current_path).to eq '/restaurants'
-      expect(page).to have_content 'Burger King (Fast Food)'
+
+  context 'logged out' do
+    it 'should redirect user to sign in page' do 
+      visit '/restaurants'
+      click_link 'Create Restaurant'
+      expect(page).to have_content 'Sign in'
     end
   end
 
-  context 'input is not valid' do
-    it 'should be able to create a restaurant' do
-      visit '/restaurants/new'
-      fill_in 'Name', with: 'Burger King'
-      fill_in 'Cuisine', with: 'ff'
-      click_button 'Create Restaurant'
-      expect(current_path).to eq '/restaurants'
-      expect(page).to have_content 'Errors'
+  context 'logged in' do
+    before do
+      user = User.create email: 'hello@hello.com', password: '12345678', password_confirmation: '12345678'
+      login_as user
+    end
+    
+    context 'input is valid' do
+      it 'should be able to create a restaurant' do
+        visit '/restaurants/new'
+        fill_in 'Name', with: 'Burger King'
+        fill_in 'Cuisine', with: 'Fast Food'
+        click_button 'Create Restaurant'
+        expect(current_path).to eq '/restaurants'
+        expect(page).to have_content 'Burger King (Fast Food)'
+      end
+    end
+
+    context 'input is not valid' do
+      it 'should be able to create a restaurant' do
+        visit '/restaurants/new'
+        fill_in 'Name', with: 'Burger King'
+        fill_in 'Cuisine', with: 'ff'
+        click_button 'Create Restaurant'
+        expect(current_path).to eq '/restaurants'
+        expect(page).to have_content 'Errors'
+      end
     end
   end
 end
 
-describe 'restaurant edit form' do
+describe 'restaurant editing and deleting' do
   before {Restaurant.create name: 'KFC', cuisine: 'Chicken'}
-  it 'should be able to edit a restaurant' do
-    visit '/restaurants'
-    click_link 'Edit'
-    fill_in 'Name', with: 'Kentucky Fried Chicken'
-    fill_in 'Cuisine', with: 'Fast Food'
-    click_button 'Update Restaurant'
-    expect(current_path).to eq '/restaurants'
-    expect(page).to have_content 'Kentucky Fried Chicken'
-    expect(page).to have_content 'Fast Food'
-  end
-end   
 
-describe 'restaurant delete' do
-  before {Restaurant.create name: 'KFC', cuisine: 'Chicken'}
-  it 'should be able to delete a restaurant' do
-    visit '/restaurants'
-    click_link 'Delete'
-    expect(current_path).to eq '/restaurants'
-    expect(page).to have_content 'Successfully deleted KFC'
+  context 'logged out' do
+    it 'should not be able to edit a restaurant' do
+      visit '/restaurants'
+      expect(page).not_to have_link 'Edit'
+    end
+
+    it 'should not be able to delete a restaurant' do
+      visit '/restaurants'
+      expect(page).not_to have_link 'Delete'
+    end
+  end
+
+  context 'logged in' do
+    before do
+      user = User.create email: 'hello@hello.com', password: '12345678', password_confirmation: '12345678'
+      login_as user
+    end
+
+    it 'should be able to edit a restaurant' do
+      visit '/restaurants'
+      click_link 'Edit'
+      fill_in 'Name', with: 'Kentucky Fried Chicken'
+      fill_in 'Cuisine', with: 'Fast Food'
+      click_button 'Update Restaurant'
+      expect(current_path).to eq '/restaurants'
+      expect(page).to have_content 'Kentucky Fried Chicken'
+      expect(page).to have_content 'Fast Food'
+    end
+
+    it 'should be able to delete a restaurant' do
+      visit '/restaurants'
+      click_link 'Delete'
+      expect(current_path).to eq '/restaurants'
+      expect(page).to have_content 'Successfully deleted KFC'
+    end
   end
 end   

@@ -6,14 +6,17 @@
       <span class='average_rating'>
         <%= star_rating(restaurant.average_rating) %>
       </span>  <br>
+      <% if user_signed_in? %>
       <%= link_to "Edit", edit_restaurant_path(restaurant.id) %>
       <%= link_to "Delete", restaurant_path(restaurant.id), method: :delete, data: { confirm: 'Are you sure?' } %>
       <%= link_to "Review", new_restaurant_review_path(restaurant.id) %>
+        <% end %> 
       <ul class='reviews'>
         <% restaurant.reviews.each do |review| %>
           <li><%= review.thoughts %> (<%= star_rating review.rating %>)</li>
         <% end %>
       </ul>
+      <% if user_signed_in? %>
       <%= form_for [restaurant, @review] do |f| %>
         <%= f.label :thoughts %>
         <%= f.text_area :thoughts %>
@@ -21,9 +24,11 @@
         <%= f.select :rating, 1..5 %>
         <%= f.submit %>
       <% end %>
+      <% end %>
     </li>
   <% end %>
   </ul>
 <% else %>
   <h1>No restaurants yet</h1>
 <% end %>
+<%= link_to 'Create Restaurant', new_restaurant_path %>
